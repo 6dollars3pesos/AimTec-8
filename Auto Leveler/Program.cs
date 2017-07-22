@@ -1,16 +1,18 @@
 ﻿using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Aimtec;
 using Aimtec.SDK.Events;
+using Aimtec.SDK.Util;
 
 namespace Auto_Leveler {
 
     public class Program {
 
-        private static Obj_AI_Hero Player;
+        private static Random Random = new Random();
 
         public static void Main(string[] args) {
             GameEvents.GameStart += GameEvents_GameStart;
@@ -18,8 +20,6 @@ namespace Auto_Leveler {
 
         private static void GameEvents_GameStart() {
             MenuManager.Create();
-
-            Player = ObjectManager.GetLocalPlayer();
 
             Obj_AI_Base.OnLevelUp += ObjAiBaseOnOnLevelUp;
         }
@@ -43,7 +43,13 @@ namespace Auto_Leveler {
                     }
 
                     if (spell.Level < maxLevel) {
-                        hero.SpellBook.LevelSpell(pair.Key);
+                        Action levelAction = () => hero.SpellBook.LevelSpell(pair.Key);
+                        if (MenuManager.HumanizerEnabled()) {
+                            DelayAction.Queue(Random.Next(1200, 3300), levelAction);
+                        }
+                        else {
+                            levelAction.Invoke();
+                        }
                     }
                 }
             }

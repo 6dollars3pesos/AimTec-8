@@ -24,14 +24,20 @@ namespace Auto_Leveler {
                 new MenuSlider("e", "E", 3, 1, 4),
                 new MenuSlider("r", "R", 4, 1, 4)
             };
+            MenuBool humanizer = new MenuBool("humanizer", "Humanizer Delay");
 
             levels.OnValueChanged += LevelsOnOnValueChanged;
 
             Menu.Add(levels);
+            Menu.Add(humanizer);
                 
             Menu.Attach();
 
             ReadSpellValues();
+        }
+
+        public static bool HumanizerEnabled() {
+            return Menu["humanizer"].Enabled;
         }
 
         private static void ReadSpellValues() {
