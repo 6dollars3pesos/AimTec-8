@@ -18,8 +18,6 @@ namespace Auto_Leveler {
         public static Dictionary<SpellSlot, int> Spells = new Dictionary<SpellSlot, int>();
 
         public static void Create() {
-            new Orbwalker().Attach(Menu);
-
             Menu levels = new Menu("levels", "Levels") {
                 new MenuSlider("q", "Q", 1, 1, 4),
                 new MenuSlider("w", "W", 2, 1, 4),
@@ -30,7 +28,7 @@ namespace Auto_Leveler {
             levels.OnValueChanged += LevelsOnOnValueChanged;
 
             Menu.Add(levels);
-
+                
             Menu.Attach();
 
             ReadSpellValues();
