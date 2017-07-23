@@ -66,6 +66,7 @@ namespace Auto_Leveler {
 
                     if (spell.Level == 0) {
                         LevelSpell(pair.Key);
+                        return;
                     }
                 }
             }
@@ -83,6 +84,7 @@ namespace Auto_Leveler {
 
                     if (spell.Level < maxLevel && e.NewLevel >= MenuManager.LevelAts[pair.Key]) {
                         LevelSpell(pair.Key);
+                        return;
                     }
                 }
             }
