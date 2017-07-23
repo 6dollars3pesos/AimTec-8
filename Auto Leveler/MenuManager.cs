@@ -15,51 +15,102 @@ namespace Auto_Leveler {
 
         private static readonly Menu Menu = new Menu("autoLeveler", "Auto Leveler", true);
 
-        public static Dictionary<SpellSlot, int> Spells = new Dictionary<SpellSlot, int>();
+        private static string _championName;
+
+        private static bool _validConfiguration;
+
+        public static Dictionary<SpellSlot, int> LevelPriorities = new Dictionary<SpellSlot, int>();
+
+        public static Dictionary<SpellSlot, int> LevelAts = new Dictionary<SpellSlot, int>();
 
         public static void Create() {
-            Menu levels = new Menu("levels", "Levels") {
-                new MenuSlider("q", "Q", 1, 1, 4),
-                new MenuSlider("w", "W", 2, 1, 4),
-                new MenuSlider("e", "E", 3, 1, 4),
-                new MenuSlider("r", "R", 4, 1, 4)
+            _championName = ObjectManager.GetLocalPlayer().ChampionName;
+
+            Menu autoLevelerMenu = new Menu(_championName, _championName) {
+                new Menu("levels", "Levels") {
+                    new MenuSlider("q", "Q", 1, 1, 4),
+                    new MenuSlider("w", "W", 2, 1, 4),
+                    new MenuSlider("e", "E", 3, 1, 4),
+                    new MenuSlider("r", "R", 4, 1, 4)
+                },
+                new Menu("levelAt", "Level at") {
+                    new MenuSlider("q", "Q", 2, 2, 18),
+                    new MenuSlider("w", "W", 2, 2, 18),
+                    new MenuSlider("e", "E", 2, 2, 18),
+                    new MenuSlider("r", "R", 2, 2, 18)
+                },
+                new MenuBool("atleastOnce", "Level QWE atleast once"),
+                new MenuSlider("startAt", "Start the Auto leveler at level", 2, 2, 18)
             };
             MenuBool humanizer = new MenuBool("humanizer", "Humanizer Delay");
 
-            levels.OnValueChanged += LevelsOnOnValueChanged;
+            autoLevelerMenu["levels"].OnValueChanged += LevelsOnOnValueChanged;
+            autoLevelerMenu["levelAt"].OnValueChanged += LevelAtOnOnValueChanged;
 
-            Menu.Add(levels);
+            Menu.Add(autoLevelerMenu);
             Menu.Add(humanizer);
-                
+
             Menu.Attach();
 
-            ReadSpellValues();
+            ReadLevelAts();
+
+            if (HasValidPriorities()) {
+                ReadSpellValues();
+                _validConfiguration = true;
+            }
+        }
+
+        public static int StartAt() {
+            return Menu[_championName]["startAt"].Value;
+        }
+
+        public static bool LevelQWEAtleastOnce() {
+            return Menu[_championName]["atleastOnce"].Enabled;
         }
 
         public static bool HumanizerEnabled() {
             return Menu["humanizer"].Enabled;
         }
 
+        public static bool HasValidConfiguration() {
+            return _validConfiguration;
+        }
+
         private static void ReadSpellValues() {
-            Spells[SpellSlot.Q] = Menu["levels"]["q"].Value;
-            Spells[SpellSlot.W] = Menu["levels"]["w"].Value;
-            Spells[SpellSlot.E] = Menu["levels"]["e"].Value;
-            Spells[SpellSlot.R] = Menu["levels"]["r"].Value;
+            LevelPriorities[SpellSlot.Q] = Menu[_championName]["levels"]["q"].Value;
+            LevelPriorities[SpellSlot.W] = Menu[_championName]["levels"]["w"].Value;
+            LevelPriorities[SpellSlot.E] = Menu[_championName]["levels"]["e"].Value;
+            LevelPriorities[SpellSlot.R] = Menu[_championName]["levels"]["r"].Value;
+        }
+
+        private static void LevelAtOnOnValueChanged(MenuComponent sender, ValueChangedArgs args) {
+            LevelAts[SpellSlot.Q] = Menu[_championName]["levelAt"]["q"].Value;
+            LevelAts[SpellSlot.W] = Menu[_championName]["levelAt"]["w"].Value;
+            LevelAts[SpellSlot.E] = Menu[_championName]["levelAt"]["e"].Value;
+            LevelAts[SpellSlot.R] = Menu[_championName]["levelAt"]["r"].Value;
+        }
+
+        private static void ReadLevelAts() {
+            LevelAts[SpellSlot.Q] = Menu[_championName]["levelAt"]["q"].Value;
+            LevelAts[SpellSlot.W] = Menu[_championName]["levelAt"]["w"].Value;
+            LevelAts[SpellSlot.E] = Menu[_championName]["levelAt"]["e"].Value;
+            LevelAts[SpellSlot.R] = Menu[_championName]["levelAt"]["r"].Value;
         }
 
         private static void LevelsOnOnValueChanged(MenuComponent sender, ValueChangedArgs args) {
             if (HasValidPriorities()) {
+                _validConfiguration = true;
                 ReadSpellValues();
             }
             else {
-                Console.WriteLine("Invalid spell priorities!");
+                _validConfiguration = false;
             }
         }
 
         private static bool HasValidPriorities() {
             List<int> priorities = new List<int>(new int[] {
-                Menu["levels"]["q"].Value, Menu["levels"]["w"].Value,
-                Menu["levels"]["e"].Value, Menu["levels"]["r"].Value
+                Menu[_championName]["levels"]["q"].Value, Menu[_championName]["levels"]["w"].Value,
+                Menu[_championName]["levels"]["e"].Value, Menu[_championName]["levels"]["r"].Value
             });
 
             foreach (int priority in priorities) {

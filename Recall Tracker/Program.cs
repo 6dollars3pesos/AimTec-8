@@ -14,8 +14,6 @@ namespace Recall_Tracker {
 
         private static readonly List<string> RecallingChampions = new List<string>();
 
-        private static readonly Font Font = new Font("Arial", 14);
-
         private static readonly int BaseY = (int) (Render.Height - Render.Height / 3.7);
         private static readonly int BaseX = (int) (Render.Width / 2.0);
 
