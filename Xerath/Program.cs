@@ -82,7 +82,7 @@ namespace Xerath {
         }
 
         private static void DashOnHeroDashed(object sender, Dash.DashArgs d) {
-            if (d.Unit.IsHero) {
+            if (MenuManager.Menu["gapCloser"].Enabled && d.Unit.IsHero) {
                 Obj_AI_Hero hero = (Obj_AI_Hero) d.Unit;
 
                 if (hero.IsInRange(SpellManager.Get(SpellSlot.E).Range) &&
@@ -93,11 +93,17 @@ namespace Xerath {
         }
 
         private static void Render_OnPresent() {
-            SpellManager.Get(SpellSlot.Q).DrawRange(Color.Blue);
-            SpellManager.Get(SpellSlot.W).DrawRange(Color.Red);
-            SpellManager.Get(SpellSlot.E).DrawRange(Color.Green);
+            if (MenuManager.Menu["drawings"]["q"].Enabled) {
+                SpellManager.Get(SpellSlot.Q).DrawRange(Color.Blue);
+            }
+            if (MenuManager.Menu["drawings"]["w"].Enabled) {
+                SpellManager.Get(SpellSlot.W).DrawRange(Color.Red);
+            }
+            if (MenuManager.Menu["drawings"]["e"].Enabled) {
+                SpellManager.Get(SpellSlot.E).DrawRange(Color.Green);
+            }
 
-            if (IsCastingR() && MenuManager.GetRMode().Equals(RMode.NearMouse)) {
+            if (IsCastingR() && MenuManager.GetRMode().Equals(RMode.NearMouse) && MenuManager.Menu["drawings"]["r"].Enabled) {
                 Render.Circle(Game.CursorPos, RNearMouseRange, 30, Color.Orange);
             }
         }

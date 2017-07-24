@@ -57,6 +57,10 @@ namespace Xerath {
                 return false;
             }
 
+            if (predictionOutput.HitChance < HitChance.VeryHigh) {
+                return false;
+            }
+
             return Cast(Utils.RandomizeVector(predictionOutput.CastPosition, _deviation));
         }
 
