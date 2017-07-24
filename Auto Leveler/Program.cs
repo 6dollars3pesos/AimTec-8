@@ -97,7 +97,7 @@ namespace Auto_Leveler {
             int spellLevel = player.SpellBook.GetSpell(spell).Level;
             string champion = player.ChampionName;
 
-            if (spell.Equals(SpellSlot.R)) {
+            if (spell.Equals(SpellSlot.R) && !champion.Equals("Udyr")) {
                 // ulti level 1
                 if (combatLevel >= 6 && combatLevel < 11 && spellLevel == 0) {
                     return true;
