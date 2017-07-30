@@ -26,25 +26,30 @@ namespace Xerath {
         public static Menu Menu = new Menu("Xerath", "King Xerx3s", true);
 
         public static void Create() {
-            new Orbwalker().Attach(Menu);
-
+  
+            MenuSeperator title = new MenuSeperator("menuTitle", "King Xerx3s");
             Menu drawings = new Menu("drawings", "Drawings") {
+                new MenuSeperator("drawingTitle", "Drawings"),
                 new MenuBool("q", "Q Range"),
                 new MenuBool("w", "W Range"),
                 new MenuBool("e", "E Range"),
-                new MenuBool("r", "Draw Circle Near Mouse in R Near Mouse Mode"),
+                new MenuBool("r", "R Range on Minimap"),
+                new MenuBool("rMouse", "Draw Circle Near Mouse in R Near Mouse Mode"),
             };
             Menu combo = new Menu("combo", "Combo") {
+                new MenuSeperator("comboTitle", "Combo"),
                 new MenuBool("q", "Q"),
                 new MenuBool("w", "W"),
                 new MenuBool("e", "E"),
             };
             Menu harass = new Menu("harass", "Harass (Mixed Mode)") {
+                new MenuSeperator("harassTitle", "Harass"),
                 new MenuBool("q", "Q"),
                 new MenuBool("w", "W"),
                 new MenuBool("e", "E", false),
             };
             Menu rMode = new Menu("rMode", "R Mode") {
+                new MenuSeperator("rModeTitle", "R Mode"),
                 new MenuBool("auto", "Auto"),
                 new Menu("tap", "Tap") {
                     new MenuKeyBind("key", "Key", KeyCode.T, KeybindType.Press),
@@ -53,6 +58,7 @@ namespace Xerath {
                 new MenuBool("nearMouse", "Near Mouse", false),
             };
             Menu farm = new Menu("laneClear", "Lane Clear") {
+                new MenuSeperator("laneClearTitle", "Lane Clear"),
                 new MenuBool("q", "Q"),
                 new MenuBool("w", "W"),
                 new MenuSlider("minMana", "Minimum Mana %", 60),
@@ -63,11 +69,16 @@ namespace Xerath {
 
             eRange.OnValueChanged += ERangeOnOnValueChanged;
 
+            Menu.Add(title);
+
+            Orbwalker orbwalker = new Orbwalker();
+            orbwalker.Attach(Menu);
+
             Menu.Add(drawings);
             Menu.Add(combo);
             Menu.Add(harass);
             Menu.Add(rMode);
-            // Menu.Add(farm);
+            Menu.Add(farm);
             Menu.Add(eRange);
             Menu.Add(gapGloser);
 

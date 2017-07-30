@@ -16,6 +16,7 @@ using Aimtec.SDK.Orbwalking;
 using Aimtec.SDK.Prediction.Skillshots;
 using Aimtec.SDK.TargetSelector;
 using Aimtec.SDK.Util;
+using Xerath.math;
 
 namespace Xerath {
 
@@ -47,6 +48,10 @@ namespace Xerath {
         }
 
         private static void GameOnOnWndProc(WndProcEventArgs wndProcEvent) {
+            if (MenuGUI.IsChatOpen()) {
+                return;
+            }
+
             if (wndProcEvent.Message == (uint) WindowsMessages.WM_KEYUP) {
                 MenuKeyBind tapMenu = (MenuKeyBind) MenuManager.Menu["rMode"]["tap"]["key"];
                 if (wndProcEvent.WParam == (ulong) tapMenu.Key && IsCastingR()) {
@@ -103,7 +108,22 @@ namespace Xerath {
                 SpellManager.Get(SpellSlot.E).DrawRange(Color.Green);
             }
 
-            if (IsCastingR() && MenuManager.GetRMode().Equals(RMode.NearMouse) && MenuManager.Menu["drawings"]["r"].Enabled) {
+            if (SpellManager.Get(SpellSlot.R).Ready && MenuManager.Menu["drawings"]["r"].Enabled) {
+                Vector2 centre;
+                Render.WorldToMinimap(ObjectManager.GetLocalPlayer().Position, out centre);
+
+                Vector3 maxRangePosition = ObjectManager.GetLocalPlayer().Position;
+                maxRangePosition.X += SpellManager.Get(SpellSlot.R).Range / 2;
+
+                Vector2 end;
+                Render.WorldToMinimap(maxRangePosition, out end);
+                float radius = Math.Abs(end.X - centre.X);
+
+                Drawing.Draw2DCircle(centre, radius, Color.Red);
+            }
+
+            if (IsCastingR() && MenuManager.GetRMode().Equals(RMode.NearMouse) &&
+                MenuManager.Menu["drawings"]["rMouse"].Enabled) {
                 Render.Circle(Game.CursorPos, RNearMouseRange, 30, Color.Orange);
             }
         }

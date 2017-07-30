@@ -51,6 +51,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Farming.cs" />
+    <Compile Include="math\Drawing.cs" />
+    <Compile Include="math\Polygon.cs" />
+    <Compile Include="math\Rectangle.cs" />
     <Compile Include="MenuManager.cs" />
     <Compile Include="Modes.cs" />
     <Compile Include="Program.cs" />

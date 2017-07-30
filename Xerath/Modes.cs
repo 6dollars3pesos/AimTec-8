@@ -8,6 +8,7 @@ using Aimtec.SDK.Extensions;
 using Aimtec.SDK.Prediction.Skillshots;
 using Aimtec.SDK.Prediction.Skillshots.AoE;
 using Aimtec.SDK.TargetSelector;
+using Aimtec.SDK.Util;
 
 namespace Xerath {
 
@@ -67,29 +68,28 @@ namespace Xerath {
         }
 
         public static void OnLaneClear() {
-//            if (ObjectManager.GetLocalPlayer().ManaPercent() < MenuManager.Menu["laneClear"]["minMana"].Value ||
-//                !MenuManager.Menu["laneClear"]["enabled"].Enabled) {
-//                return;
-//            }
-//
-//            if (MenuManager.Menu["laneClear"]["q"].Enabled) {
-//                SpellWrapper spell = SpellManager.Spells[SpellSlot.Q];
-//
-//                foreach (Obj_AI_Minion minion in ObjectManager.Get<Obj_AI_Minion>()
-//                    .Where(minion => minion != null && minion.IsValid && minion.IsMinion && !minion.IsDead &&
-//                                     minion.IsInRange(spell.Range))) {
-//
-//                    PredictionInput predictionInput = spell.GetPredictionInput(minion);
-//                    PredictionOutput aoEPrediction = AoePrediction.GetAoEPrediction(new PredictionInput());
-//
-//                    int killableMinions = aoEPrediction.AoeTargetsHit
-//                        .Count(unit => unit.IsMinion && spell.CanKill(unit));
-//                    if (killableMinions >= 3) {
-//                        spell.CastMob(minion);
-//                        return;
-//                    }
-//                }
-//            }
+            if (!MenuManager.Menu["laneClear"]["enabled"].Enabled || ObjectManager.GetLocalPlayer().ManaPercent() <
+                MenuManager.Menu["laneClear"]["minMana"].Value) {
+                return;
+            }
+
+            if (MenuManager.Menu["laneClear"]["q"].Enabled) {
+                Vector3? castPosition = Farming.GetLineClearLocation(SpellManager.Get(SpellSlot.Q));
+                if (castPosition != null) {
+                    SpellManager.Get(SpellSlot.Q).HitChance = HitChance.Medium;
+                    SpellManager.Get(SpellSlot.Q).Cast((Vector3) castPosition);
+                    SpellManager.Get(SpellSlot.Q).HitChance = HitChance.VeryHigh;
+                }
+            }
+
+            if (MenuManager.Menu["laneClear"]["w"].Enabled) {
+                Vector3? castPosition = Farming.GetCircularClearLocation(SpellManager.Get(SpellSlot.W));
+                if (castPosition != null) {
+                    SpellManager.Get(SpellSlot.Q).HitChance = HitChance.Medium;
+                    SpellManager.Get(SpellSlot.W).Cast((Vector3) castPosition);
+                    SpellManager.Get(SpellSlot.Q).HitChance = HitChance.VeryHigh;
+                }
+            }
         }
 
         private static float GetRRange() {
