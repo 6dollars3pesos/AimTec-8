@@ -58,9 +58,7 @@ namespace TempEvade {
             }
         }
 
-        private static void MissileClientOnOnDestroy(GameObject sender) {
-            
-        }
+        private static void MissileClientOnOnDestroy(GameObject sender) { }
 
         private static void MissileClientOnOnCreate(GameObject sender) {
             if (sender.GetType() == typeof(MissileClient)) {
@@ -96,7 +94,7 @@ namespace TempEvade {
                                             (spellRecord.range / spellRecord.projectileSpeed) * 1000;
 
                             SpellWrapper spellWrapper = new SpellWrapper(Game.TickCount + endTick, e.Start, e.End,
-                                sender.NetworkId, spellRecord.range * 1.25f, spellRecord.radius * 1.30f);
+                                sender.NetworkId, spellRecord.range * 1.25f, spellRecord.radius * 1.5f);
                             newSpells.Add(spellWrapper);
                             break;
                     }
@@ -165,17 +163,21 @@ namespace TempEvade {
             while (possibleEscapes.Count == 0) {
                 Circle escapeCircle = new Circle(ObjectManager.GetLocalPlayer().Position, escapeRadius, 50);
                 possibleEscapes.AddRange(spellBox.GetOutsidePoints(escapeCircle));
-                escapeRadius *= 4;
+                escapeRadius *= 5;
             }
 
-            possibleEscapes = possibleEscapes.FindAll(v => !NavMesh.WorldToCell(v).Flags
-                .HasFlag(NavCellFlags.Wall | NavCellFlags.Building));
-            possibleEscapes.Sort((v1, v2) => (int) (v2.Distance(casterPosition) - v1.Distance(casterPosition)));
-            possibleEscapes = possibleEscapes.GetRange(0, Math.Min(5, possibleEscapes.Count - 1));
-            possibleEscapes.Sort((v1, v2) => (int) (v1.Distance(ObjectManager.GetLocalPlayer()) -
-                                                    v2.Distance(ObjectManager.GetLocalPlayer())));
+            Vector3 closestEscape = possibleEscapes.First();
+            float smallestRange = closestEscape.Distance(ObjectManager.GetLocalPlayer().Position);
+            foreach (Vector3 possibleEscape in possibleEscapes) {
+                float possibleRange = possibleEscape.Distance(ObjectManager.GetLocalPlayer().Position);
+                if (possibleRange > smallestRange && !NavMesh.WorldToCell(possibleEscape).Flags
+                        .HasFlag(NavCellFlags.Wall)) {
+                    closestEscape = possibleEscape;
+                    smallestRange = possibleRange;
+                }
+            }
 
-            return ObjectManager.GetLocalPlayer().IssueOrder(OrderType.MoveTo, possibleEscapes.First());
+            return ObjectManager.GetLocalPlayer().IssueOrder(OrderType.MoveTo, closestEscape);
         }
 
         private static void Render_OnPresent() {
