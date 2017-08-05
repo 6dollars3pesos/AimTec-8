@@ -14,7 +14,8 @@ namespace Xerath {
 
     public class Modes {
 
-        private static readonly float[] RRanges = {0, 3520, 4840, 6160};
+        private static readonly float[] RRanges = {0, 3500, 4820, 6140};
+        private static readonly int[] UltiShots = {0, 3, 4, 5};
 
         public static void OnMixed() {
             if (MenuManager.Menu["harass"]["q"].Enabled) {
@@ -92,8 +93,13 @@ namespace Xerath {
             }
         }
 
-        private static float GetRRange() {
+        public static float GetRRange() {
             return RRanges[ObjectManager.GetLocalPlayer().SpellBook.GetSpell(SpellSlot.R).Level];
+        }
+
+        public static int GetUltiShots()
+        {
+            return UltiShots[ObjectManager.GetLocalPlayer().SpellBook.GetSpell(SpellSlot.R).Level];
         }
 
     }

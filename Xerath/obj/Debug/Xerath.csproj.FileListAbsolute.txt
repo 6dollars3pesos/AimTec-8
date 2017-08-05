@@ -15,4 +15,3 @@ C:\Users\pc\Documents\Visual Studio 2015\Projects\AimTec\Xerath\bin\Debug\Aimtec
 C:\Users\pc\Documents\Visual Studio 2015\Projects\AimTec\Xerath\bin\Debug\Aimtec.SDK.dll
 C:\Users\pc\Documents\Visual Studio 2015\Projects\AimTec\Xerath\bin\Debug\NLog.dll
 C:\Users\pc\Documents\Visual Studio 2015\Projects\AimTec\Xerath\bin\Debug\Newtonsoft.Json.dll
-C:\Users\pc\Documents\Visual Studio 2015\Projects\AimTec\Xerath\obj\Debug\Xerath.csprojResolveAssemblyReference.cache

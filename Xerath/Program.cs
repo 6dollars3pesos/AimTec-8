@@ -113,7 +113,7 @@ namespace Xerath {
                 Render.WorldToMinimap(ObjectManager.GetLocalPlayer().Position, out centre);
 
                 Vector3 maxRangePosition = ObjectManager.GetLocalPlayer().Position;
-                maxRangePosition.X += SpellManager.Get(SpellSlot.R).Range / 2;
+                maxRangePosition.X += Modes.GetRRange();
 
                 Vector2 end;
                 Render.WorldToMinimap(maxRangePosition, out end);
@@ -125,6 +125,19 @@ namespace Xerath {
             if (IsCastingR() && MenuManager.GetRMode().Equals(RMode.NearMouse) &&
                 MenuManager.Menu["drawings"]["rMouse"].Enabled) {
                 Render.Circle(Game.CursorPos, RNearMouseRange, 30, Color.Orange);
+            }
+
+            if (MenuManager.Menu["drawings"]["rKillable"].Enabled && SpellManager.Get(SpellSlot.R).Ready) {
+                foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>())
+                {
+                    if (hero != null && hero.IsEnemy && !hero.IsDead) {
+                        if (SpellManager.Get(SpellSlot.R).CanKill(hero, Modes.GetUltiShots())) {
+                            double overkillDmg = Math.Abs(hero.Health - SpellManager.Get(SpellSlot.R).GetSpellDamage(hero, Modes.GetUltiShots()));
+                            Vector2 drawingPosition = new Vector2(hero.FloatingHealthBarPosition.X + 10, hero.FloatingHealthBarPosition.Y - 35);
+                            Render.Text(drawingPosition, Color.Red, "OVERKILL DMG: " + overkillDmg.ToString("0"));
+                        }
+                    }
+                }
             }
         }
 

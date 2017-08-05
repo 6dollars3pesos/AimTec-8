@@ -30,7 +30,7 @@ namespace Xerath {
             UpdateERange();
 
             Spells[SpellSlot.Q].SetSkillshot(0.6f, 95f, float.MaxValue, false, SkillshotType.Line, false,
-                HitChance.VeryHigh);
+                HitChance.High);
             Spells[SpellSlot.Q].SetCharged("XerathArcanopulseChargeUp", "XerathArcanopulseChargeUp", 750, 1400, 1.5f);
             Spells[SpellSlot.W].SetSkillshot(0.7f, 125, float.MaxValue, false, SkillshotType.Circle, false,
                 HitChance.VeryHigh);

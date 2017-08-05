@@ -36,9 +36,13 @@ namespace Xerath {
             return Game.ClockTime - ObjectManager.GetLocalPlayer().SpellBook.GetSpell(Slot).CooldownEnd < 0;
         }
 
-        public bool CanKill(Obj_AI_Base target) {
-            double potentionalDamage = ObjectManager.GetLocalPlayer().GetSpellDamage(target, Slot);
-            return target.Health < potentionalDamage;
+        public double GetSpellDamage(Obj_AI_Base target, int shots = 1)
+        {
+            return ObjectManager.GetLocalPlayer().GetSpellDamage(target, Slot) * shots;
+        }
+
+        public bool CanKill(Obj_AI_Base target, int shots = 1) {
+            return target.Health < GetSpellDamage(target, shots);
         }
 
         public bool CastMob() {

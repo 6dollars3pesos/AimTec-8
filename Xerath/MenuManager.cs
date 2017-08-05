@@ -28,14 +28,6 @@ namespace Xerath {
         public static void Create() {
   
             MenuSeperator title = new MenuSeperator("menuTitle", "King Xerx3s");
-            Menu drawings = new Menu("drawings", "Drawings") {
-                new MenuSeperator("drawingTitle", "Drawings"),
-                new MenuBool("q", "Q Range"),
-                new MenuBool("w", "W Range"),
-                new MenuBool("e", "E Range"),
-                new MenuBool("r", "R Range on Minimap"),
-                new MenuBool("rMouse", "Draw Circle Near Mouse in R Near Mouse Mode"),
-            };
             Menu combo = new Menu("combo", "Combo") {
                 new MenuSeperator("comboTitle", "Combo"),
                 new MenuBool("q", "Q"),
@@ -64,8 +56,17 @@ namespace Xerath {
                 new MenuSlider("minMana", "Minimum Mana %", 60),
                 new MenuBool("enabled", "Enabled"),
             };
-            MenuSlider eRange = new MenuSlider("eRange", "E Range", 84);
             MenuBool gapGloser = new MenuBool("gapCloser", "Auto E on Gap Closer");
+            MenuSlider eRange = new MenuSlider("eRange", "E Range", 84);
+            Menu drawings = new Menu("drawings", "Drawings") {
+                new MenuSeperator("drawingTitle", "Drawings"),
+                new MenuBool("q", "Q Range"),
+                new MenuBool("w", "W Range"),
+                new MenuBool("e", "E Range"),
+                new MenuBool("r", "R Range on Minimap"),
+                new MenuBool("rKillable", "Draw killable target with R"),
+                new MenuBool("rMouse", "Draw Circle Near Mouse in R Near Mouse Mode"),
+            };
 
             eRange.OnValueChanged += ERangeOnOnValueChanged;
 
@@ -74,13 +75,13 @@ namespace Xerath {
             Orbwalker orbwalker = new Orbwalker();
             orbwalker.Attach(Menu);
 
-            Menu.Add(drawings);
             Menu.Add(combo);
             Menu.Add(harass);
             Menu.Add(rMode);
             Menu.Add(farm);
-            Menu.Add(eRange);
             Menu.Add(gapGloser);
+            Menu.Add(eRange);
+            Menu.Add(drawings);
 
             Menu.Attach();
         }
