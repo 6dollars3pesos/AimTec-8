@@ -69,6 +69,8 @@ namespace Xerath {
         }
 
         public static void OnLaneClear() {
+            Console.WriteLine(ObjectManager.GetLocalPlayer().GetLastCastedSpellTime());
+
             if (!MenuManager.Menu["laneClear"]["enabled"].Enabled || ObjectManager.GetLocalPlayer().ManaPercent() <
                 MenuManager.Menu["laneClear"]["minMana"].Value) {
                 return;
@@ -79,8 +81,9 @@ namespace Xerath {
                 if (castPosition != null) {
                     SpellManager.Get(SpellSlot.Q).HitChance = HitChance.Medium;
                     SpellManager.Get(SpellSlot.Q).Cast((Vector3) castPosition);
-                    SpellManager.Get(SpellSlot.Q).HitChance = HitChance.VeryHigh;
+                    SpellManager.Get(SpellSlot.Q).HitChance = HitChance.High;
                 }
+                
             }
 
             if (MenuManager.Menu["laneClear"]["w"].Enabled) {

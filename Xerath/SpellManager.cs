@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Aimtec;
 using Aimtec.SDK.Prediction.Skillshots;
-using Spell = Aimtec.SDK.Spell;
 
 namespace Xerath {
 
@@ -22,7 +21,7 @@ namespace Xerath {
         }
 
         static SpellManager() {
-            Spells[SpellSlot.Q] = new SpellWrapper(SpellSlot.Q, 0, 1400);
+            Spells[SpellSlot.Q] = new SpellWrapper(SpellSlot.Q, 0, 1510);
             Spells[SpellSlot.W] = new SpellWrapper(SpellSlot.W, 0, 1100);
             Spells[SpellSlot.E] = new SpellWrapper(SpellSlot.E, 0, MaxERange);
             Spells[SpellSlot.R] = new SpellWrapper(SpellSlot.R, 0, 6160);

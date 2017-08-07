@@ -130,7 +130,7 @@ namespace Xerath {
             if (MenuManager.Menu["drawings"]["rKillable"].Enabled && SpellManager.Get(SpellSlot.R).Ready) {
                 foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>())
                 {
-                    if (hero != null && hero.IsEnemy && !hero.IsDead) {
+                    if (hero != null && hero.IsEnemy && !hero.IsDead && hero.IsVisible) {
                         if (SpellManager.Get(SpellSlot.R).CanKill(hero, Modes.GetUltiShots())) {
                             double overkillDmg = Math.Abs(hero.Health - SpellManager.Get(SpellSlot.R).GetSpellDamage(hero, Modes.GetUltiShots()));
                             Vector2 drawingPosition = new Vector2(hero.FloatingHealthBarPosition.X + 10, hero.FloatingHealthBarPosition.Y - 35);

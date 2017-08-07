@@ -54,17 +54,17 @@ namespace Xerath {
                 return false;
             }
 
-            PredictionOutput predictionOutput = Prediction.GetPrediction(GetPredictionInput(mob));
+            PredictionOutput predictionOutput = GetPrediction(mob);
             Obj_AI_Base invalidCollisionUnit =
                 predictionOutput.CollisionObjects.FirstOrDefault(objAiBase => objAiBase.IsMinion);
             if (invalidCollisionUnit != null) {
                 return false;
             }
 
-            if (predictionOutput.HitChance < HitChance.VeryHigh) {
+            if (predictionOutput.HitChance < HitChance) {
                 return false;
             }
-
+            
             return Cast(Utils.RandomizeVector(predictionOutput.CastPosition, _deviation));
         }
 
