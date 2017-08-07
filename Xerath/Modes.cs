@@ -69,7 +69,6 @@ namespace Xerath {
         }
 
         public static void OnLaneClear() {
-            Console.WriteLine(ObjectManager.GetLocalPlayer().GetLastCastedSpellTime());
 
             if (!MenuManager.Menu["laneClear"]["enabled"].Enabled || ObjectManager.GetLocalPlayer().ManaPercent() <
                 MenuManager.Menu["laneClear"]["minMana"].Value) {
